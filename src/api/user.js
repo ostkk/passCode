@@ -8,7 +8,7 @@ export function login(data) {
   })
 }
 
-export function getInfo(token) {
+export function getInfo() {
   return request({
     url: '/getInfo',
     method: 'get',
@@ -19,5 +19,13 @@ export function logout() {
   return request({
     url: '/logout',
     method: 'post'
+  })
+}
+
+export function uploadData(data) {
+  return request({
+    url: '/uploadStudent',
+    method: 'post',
+    data,
   })
 }
