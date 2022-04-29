@@ -29,3 +29,19 @@ export function uploadData(data) {
     data,
   })
 }
+
+export function searchStudent(data) {
+  return request({
+    url: '/searchStudent',
+    method: 'post',
+    data
+  })
+}
+
+export function updateStudentData(data) {
+  return request({
+    url: '/updateStudentData',
+    method: 'post',
+    data
+  })
+}
