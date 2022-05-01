@@ -45,3 +45,19 @@ export function updateStudentData(data) {
     data
   })
 }
+
+export function applyOut(data) {
+  return request({
+    url: '/applyOut',
+    method: 'post',
+    data
+  })
+}
+
+export function applyBack(data) {
+  return request({
+    url: '/applyBack',
+    method: 'post',
+    data
+  })
+}

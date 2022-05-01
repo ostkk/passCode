@@ -58,6 +58,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import { applyOut } from "@/api/user";
 import { regionData, CodeToText } from "element-china-area-data";
 export default {
   name: "applyOut",
@@ -97,19 +98,29 @@ export default {
     };
   },
   methods: {
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
+    async submitForm(formName) {
+      this.$refs[formName].validate(async (valid) => {
         if (valid) {
           let area = [];
           this.ruleForm.selectedOptions.forEach((e) => {
             area.push(CodeToText[e]);
           });
+          area = area.join(",");
           let data = {
             number: this.name.number,
-            date: this.ruleForm.date,
+            date:
+              this.ruleForm.date.getFullYear() +
+              "-" +
+              (this.ruleForm.date.getMonth() + 1) +
+              "-" +
+              this.ruleForm.date.getDate(),
             area,
           };
-          console.log(data);
+          let res = await applyOut(data);
+          if (res.code == 200) {
+            console.log(res.message);
+            this.$message.success({ message: res.message });
+          }
         } else {
           return false;
         }
