@@ -117,6 +117,7 @@ export default {
             area,
           };
           let res = await applyOut(data);
+          this.resetForm("ruleForm");
           if (res.code == 200) {
             console.log(res.message);
             this.$message.success({ message: res.message });

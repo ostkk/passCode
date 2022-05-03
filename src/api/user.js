@@ -61,3 +61,17 @@ export function applyBack(data) {
     data
   })
 }
+
+export function applyCode(number) {
+  return request({
+    url: `/applyCode?number=${number}`,
+    method: 'get',
+  })
+}
+
+export function applyList(passed) {
+  return request({
+    url: `/applyList?number=${passed}`,
+    method: 'get',
+  })
+}
