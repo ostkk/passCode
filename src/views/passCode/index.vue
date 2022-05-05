@@ -109,6 +109,7 @@ export default {
   },
   async mounted() {
     let res = await applyCode(this.name.number);
+    this.$store.dispatch("user/getInfo");
     if (res.code == 200) {
       this.show = true;
       this.qrcode();

@@ -71,7 +71,54 @@ export function applyCode(number) {
 
 export function applyList(passed) {
   return request({
-    url: `/applyList?number=${passed}`,
+    url: `/applyList?passed=${passed}`,
     method: 'get',
+  })
+}
+
+export function getNewApplyNumber() {
+  return request({
+    url: `/getNewApplyNumber`,
+    method: 'get',
+  })
+}
+
+export function passOrRefuse(id, s) {
+  return request({
+    url: `/passOrRefuse?s=${s}&id=${id}`,
+    method: 'get',
+  })
+}
+
+export function getCity() {
+  return request({
+    url: `/getCity`,
+    method: 'get',
+  })
+}
+
+export function addCity(data) {
+  return request({
+    url: `/addCity`,
+    method: 'post',
+    data
+  })
+}
+
+export function deleteCity(data) {
+  return request({
+    url: `/deleteCity`,
+    method: 'delete',
+    params: {
+      data
+    }
+  })
+}
+
+export function switchAuto(data) {
+  return request({
+    url: `/switchAuto`,
+    method: 'post',
+    data
   })
 }

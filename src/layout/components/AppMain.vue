@@ -7,12 +7,22 @@
 </template>
 
 <script>
+import { getNewApplyNumber } from "@/api/user";
 export default {
   name: "AppMain",
   computed: {
     key() {
       return this.$route.path;
     },
+  },
+  async mounted() {
+    let n = await getNewApplyNumber();
+    if (n.code == 200) {
+      n = n.data.number;
+    } else {
+      n = 0;
+    }
+    this.$store.dispatch("app/getNumber", n);
   },
 };
 </script>
