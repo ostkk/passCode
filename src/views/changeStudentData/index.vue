@@ -18,6 +18,7 @@
       >
     </div>
     <el-form
+      style="margin-top: 20px"
       :model="ruleForm"
       status-icon
       :rules="rules"
@@ -40,12 +41,9 @@
           autocomplete="off"
         ></el-input>
       </el-form-item>
-      <el-form-item label="密码" prop="password">
-        <el-input
-          type="text"
-          v-model="ruleForm.password"
-          autocomplete="off"
-        ></el-input>
+      <el-form-item label="重置密码">
+        <el-radio v-model="radioPass" label="1">是</el-radio>
+        <el-radio v-model="radioPass" label="2">否</el-radio>
       </el-form-item>
       <el-form-item label="是否在校">
         <el-radio v-model="radio" label="1">在校</el-radio>
@@ -56,13 +54,14 @@
           >提交</el-button
         >
         <el-button @click="resetForm()">重置</el-button>
+        <el-button type="danger" @click="deleteStudent()">删除</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
-import { searchStudent, updateStudentData } from "@/api/user";
+import { searchStudent, updateStudentData, deleteStu } from "@/api/user";
 export default {
   name: "changeStudentData",
   data() {
@@ -97,26 +96,15 @@ export default {
         }
       }
     };
-    var validatePassword = (rule, value, callback) => {
-      if (value.length < 6 || value.length > 10) {
-        callback(new Error("密码应为6至10位"));
-      } else {
-        let regx = /^[^\u4e00-\u9fa5 ]{6,10}$/;
-        if (regx.test(value)) {
-          callback();
-        } else {
-          callback(new Error("密码不能包含中文和空格"));
-        }
-      }
-    };
     return {
       ipt: "",
+      password: "",
+      radioPass: "2",
       showTable: false,
-      ruleForm: { number: "", status: "", name: "", password: "" },
+      ruleForm: { number: "", status: "", name: "" },
       rules: {
         name: [{ validator: validateName, trigger: "change" }],
         number: [{ validator: validateNumber, trigger: "change" }],
-        password: [{ validator: validatePassword, trigger: "change" }],
       },
     };
   },
@@ -134,8 +122,8 @@ export default {
         if (res.code == 200) {
           this.ruleForm.status = res.data.status;
           this.ruleForm.name = res.data.name;
-          this.ruleForm.password = res.data.password;
           this.ruleForm.number = res.data.number;
+          this.password = res.data.password;
           this.showTable = true;
         }
       } catch (err) {}
@@ -148,8 +136,9 @@ export default {
               name: this.ruleForm.name,
               status: this.ruleForm.status,
               number: this.ruleForm.number,
-              password: this.ruleForm.password,
               prenumber: this.ipt,
+              resetPassword: this.radioPass,
+              password: this.password,
             });
             if (res.code == 200) {
               this.$message.success({ message: res.message });
@@ -165,8 +154,30 @@ export default {
       this.ruleForm.number = "";
       this.ruleForm.status = "";
       this.ruleForm.name = "";
-      this.ruleForm.password = "";
       this.showTable = false;
+      this.radioPass = "2";
+    },
+    async deleteStudent() {
+      this.$confirm(`确定删除学号为${this.ruleForm.number}的学生吗？`, "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          let res = await deleteStu({
+            number: this.ruleForm.number,
+          });
+          if (res.code == 200) {
+            this.$message.success({ message: res.message });
+          }
+          this.resetForm();
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
     },
   },
   computed: {

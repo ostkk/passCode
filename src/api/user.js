@@ -30,6 +30,14 @@ export function uploadData(data) {
   })
 }
 
+export function changePassword(data) {
+  return request({
+    url: '/changePassword',
+    method: 'post',
+    data,
+  })
+}
+
 export function searchStudent(data) {
   return request({
     url: '/searchStudent',
@@ -120,5 +128,15 @@ export function switchAuto(data) {
     url: `/switchAuto`,
     method: 'post',
     data
+  })
+}
+
+export function deleteStu(data) {
+  return request({
+    url: `/deleteStu`,
+    method: 'delete',
+    params: {
+      data
+    }
   })
 }

@@ -83,6 +83,16 @@ export default {
         this.form.number = "";
         return;
       }
+      regex = /^[\u4e00-\u9fa5]{1,10}$/;
+      if (!regex.test(this.form.name)) {
+        let regxx = /^[a-zA-Z ]{1,19}[a-z]$/;
+        if (!regxx.test(this.form.name)) {
+          this.$message.error({ message: "姓名中包含非法字符" });
+          this.form.name = "";
+          this.form.number = "";
+          return;
+        }
+      }
       try {
         let res = await uploadData(this.form);
         if (res.code == 200) {
